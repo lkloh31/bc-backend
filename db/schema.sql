@@ -9,6 +9,8 @@ CREATE TABLE users (
   name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
+  location TEXT,
+  created_at TIMESTAMPTZ
 );
 
 CREATE TABLE categories (
