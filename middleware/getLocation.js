@@ -1,6 +1,7 @@
-// export async function getLocation(req) {
-//   const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-//   const response = await fetch(`https://ipapi.co/${ip}/json/`);
-//   const data = await response.json();
-//   return `${data.city}, ${data.region}, ${data.country_name}`;
-// }
+const fetch = require("node-fetch");
+
+export async function getLocation(ip) {
+  const response = await fetch(`https://get.geojs.io/v1/ip/geo/${ip}.json`);
+  const data = await response.json();
+  return data;
+}
