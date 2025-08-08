@@ -2,6 +2,7 @@ import morgan from "morgan";
 import express from "express";
 const app = express();
 import cors from "cors";
+const mapRouter = require('./api/map')
 
 export default app;
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.use(getUserFromToken);
+app.use('/api/map', mapRouter);
 
 app.use("/admin", usersRouter);
 
