@@ -21,7 +21,7 @@ app.use(morgan("dev"));
 
 app.use(getUserFromToken);
 
-app.use("/api/auth", usersRouter);
+app.use("/admin", usersRouter);
 
 app.use((err, req, res, next) => {
   // A switch statement can be used instead of if statements
