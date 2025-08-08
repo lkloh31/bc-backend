@@ -1,8 +1,7 @@
-# FSU Backend Starter
+To set up map feature:
 
-You can use this repository as a template for your backend.
+1. add to your .env
 
-## Usage
+   REACT_APP_MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoibGtsb2gzMSIsImEiOiJjbWUzMHFhYzIwMjhzMnNvbjVhenoxNGx6In0.prhOo6V_pATa5V7HZijTtA
 
-1. Create a new database named `fsu`.
-2. Update the environment variables in `example.env` and rename the file to `.env`.
+2. npm install mapbox-gl
