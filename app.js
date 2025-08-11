@@ -7,6 +7,7 @@ export default app;
 
 import usersRouter from "#api/users";
 import getUserFromToken from "#middleware/getUserFromToken";
+import newsRouter from "#api/news";
 
 app.use(
   cors({
@@ -21,7 +22,9 @@ app.use(morgan("dev"));
 
 app.use(getUserFromToken);
 
-app.use("/admin", usersRouter);
+app.use("/users", usersRouter);
+
+app.use("/daily/news", newsRouter);
 
 app.use((err, req, res, next) => {
   // A switch statement can be used instead of if statements
