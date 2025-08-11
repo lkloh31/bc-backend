@@ -3,11 +3,10 @@ import express from "express";
 const app = express();
 import cors from "cors";
 
-export default app;
-
 import usersRouter from "#api/users";
 import mapRouter from "#api/map";
 import getUserFromToken from "#middleware/getUserFromToken";
+import newsRouter from "#api/news";
 
 app.use(
   cors({
@@ -21,6 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.use(getUserFromToken);
+
+app.use("/users", usersRouter);
+app.use("/daily/news", newsRouter);
 app.use("/map", mapRouter);
 app.use("/admin", usersRouter);
 
@@ -47,3 +49,5 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send("Sorry! Something went wrong.");
 });
+
+export default app;
