@@ -45,10 +45,9 @@ router
 
     const user = await createUser(name, email, password, location, created_at);
 
-
-    const token = createToken({ id: user.id });
+    const token = await createToken({ id: user.id });
     res.status(201).send({ token });
-
+  });
 
 router
   .route("/login")
@@ -58,8 +57,7 @@ router
     if (!user) return res.status(401).send("Invalid email or password.");
 
     const token = await createToken({ id: user.id });
-    res.send({token});
-
+    res.send({ token });
   });
 
 router.route("/:id").get(requireUser, async (req, res) => {
