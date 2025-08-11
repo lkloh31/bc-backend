@@ -3,8 +3,6 @@ import express from "express";
 const app = express();
 import cors from "cors";
 
-
-
 import usersRouter from "#api/users";
 import mapRouter from "#api/map";
 import getUserFromToken from "#middleware/getUserFromToken";
@@ -25,6 +23,8 @@ app.use(getUserFromToken);
 
 app.use("/users", usersRouter);
 app.use("/daily/news", newsRouter);
+app.use("/map", mapRouter);
+app.use("/admin", usersRouter);
 
 app.use((err, req, res, next) => {
   // A switch statement can be used instead of if statements

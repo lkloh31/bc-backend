@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS daily_items;
 DROP TABLE IF EXISTS journal_entries;
 DROP TABLE IF EXISTS map;
 DROP TABLE IF EXISTS news;
+DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -37,7 +37,7 @@ CREATE TABLE journal_entries (
   entry_timestamp DATE,
   title TEXT,
   context TEXT,
-  image,
+  -- image,
   tags TEXT,
   created_at TIME,
   updated_at TIME,
@@ -51,10 +51,11 @@ CREATE TABLE map (
   address TEXT,
   latitude DECIMAL NOT NULL,
   longitude DECIMAL NOT NULL,
-  location_type TEXT,
+  location_type TEXT DEFAULT 'been_there',
   notes TEXT,
-  rating INT,
+  rating INT CHECK (rating >= 1 AND rating <= 5),
   visited_date DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
   category_id INT REFERENCES categories(id) ON DELETE CASCADE,
   user_id INT REFERENCES users(id) ON DELETE CASCADE
 );
