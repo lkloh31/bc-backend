@@ -3,10 +3,12 @@ import express from "express";
 const app = express();
 import cors from "cors";
 
-export default app;
+
 
 import usersRouter from "#api/users";
+import mapRouter from "#api/map";
 import getUserFromToken from "#middleware/getUserFromToken";
+import newsRouter from "#api/news";
 
 app.use(
   cors({
@@ -21,7 +23,8 @@ app.use(morgan("dev"));
 
 app.use(getUserFromToken);
 
-app.use("/admin", usersRouter);
+app.use("/users", usersRouter);
+app.use("/daily/news", newsRouter);
 
 app.use((err, req, res, next) => {
   // A switch statement can be used instead of if statements
@@ -46,3 +49,5 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send("Sorry! Something went wrong.");
 });
+
+export default app;

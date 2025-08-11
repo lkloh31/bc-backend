@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS daily_items;
 DROP TABLE IF EXISTS journal_entries;
 DROP TABLE IF EXISTS map;
+DROP TABLE IF EXISTS news;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -56,4 +57,18 @@ CREATE TABLE map (
   visited_date DATE,
   category_id INT REFERENCES categories(id) ON DELETE CASCADE,
   user_id INT REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE news (
+  id SERIAL PRIMARY KEY,
+  source VARCHAR(255),
+  author VARCHAR(255),
+  title TEXT NOT NULL,
+  description TEXT,
+  content TEXT,
+  url TEXT UNIQUE NOT NULL,
+  urlToImage TEXT,
+  published_at TIMESTAMP,
+  fetched_at TIMESTAMP DEFAULT NOW(),
+  daily_id INT REFERENCES daily_items(id) ON DELETE CASCADE,
 );
