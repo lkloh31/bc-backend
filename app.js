@@ -2,11 +2,11 @@ import morgan from "morgan";
 import express from "express";
 const app = express();
 import cors from "cors";
-const mapRouter = require('./api/map')
 
-export default app;
+
 
 import usersRouter from "#api/users";
+import mapRouter from "#api/map";
 import getUserFromToken from "#middleware/getUserFromToken";
 
 app.use(
@@ -21,9 +21,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.use(getUserFromToken);
-app.use('/api/map', mapRouter);
 
 app.use("/admin", usersRouter);
+app.use("/api/map", mapRouter);
 
 app.use((err, req, res, next) => {
   // A switch statement can be used instead of if statements
@@ -48,3 +48,5 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send("Sorry! Something went wrong.");
 });
+
+export default app;
