@@ -6,6 +6,7 @@ import cors from "cors";
 export default app;
 
 import usersRouter from "#api/users";
+import mapRouter from "#api/map";
 import getUserFromToken from "#middleware/getUserFromToken";
 
 app.use(
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.use(getUserFromToken);
-
+app.use("/map", mapRouter);
 app.use("/admin", usersRouter);
 
 app.use((err, req, res, next) => {
