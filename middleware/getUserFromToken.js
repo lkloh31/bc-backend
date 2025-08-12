@@ -12,6 +12,7 @@ export default async function getUserFromToken(req, res, next) {
     req.user = user;
     next();
   } catch {
-    res.status(401).send("Invalid token.");
+    // res.status(401).send("Invalid token.");
   }
+  next();
 }
