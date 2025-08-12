@@ -34,7 +34,7 @@ async function fetchOpenMeteo({ lat, lon, units = "metric" }) {
 const DEFAULT_COORDS = { lat: 37.7749, lon: -122.4194 };
 
 // GET /api/weather/me -> weather for the logged-in user's saved coords
-router.get("/me", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const units = req.query.units === "imperial" ? "imperial" : "metric";
     let coords = parseLocation(req.user?.location);
