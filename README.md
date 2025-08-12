@@ -12,6 +12,7 @@ Instructions for the .env file:
 2. Go to https://www.exchangerate-api.com > sign up and get the API key
 3. Create an .env file in the backend folder
 4. Update .env as follows:
+
    DATABASE_URL=postgres://username@localhost:5432/bc // update the USERNAME
    JWT_SECRET=lincolnrock$
    NEWS_API_KEY=15b33c1f684a44d8b01d153500ec7d77 // update the API_KEY
