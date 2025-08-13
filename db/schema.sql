@@ -1,8 +1,10 @@
 
 DROP TABLE IF EXISTS journal_entries;
 DROP TABLE IF EXISTS map;
+
 DROP TABLE IF EXISTS news;
 DROP TABLE IF EXISTS daily_items;
+
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
 
