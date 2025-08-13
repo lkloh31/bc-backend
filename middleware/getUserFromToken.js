@@ -10,8 +10,8 @@ export default async function getUserFromToken(req, res, next) {
     const { id } = verifyToken(token);
     const user = await getUserById(id);
     req.user = user;
-    next();
-  } catch {
-    res.status(401).send("Invalid token.");
+  } catch (error) {
+    console.error("Token verification failed:", error);
   }
+  next();
 }

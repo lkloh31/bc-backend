@@ -1,133 +1,99 @@
 import db from "#db/client";
 
-/**
- * Retrieves all map locations for a specific user.
- * @param {number} userId - The ID of the user whose locations are to be fetched.
- * @returns {Promise<Array>} A promise that resolves to an array of location objects.
- */
-export async function getLocationsByUserId(userId) {
+export async function createMapPin({
+  userId,
+  name,
+  latitude,
+  longitude,
+  address,
+  notes,
+  rating,
+  locationType,
+  visitedDate,
+}) {
   const sql = `
-    SELECT *
-    FROM map
-    WHERE user_id = $1
-  `;
+    INSERT INTO map (user_id, name, latitude, longitude, address, notes, rating, location_type, visited_date)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+     RETURNING *
+    `;
+  const {
+    rows: [pin],
+  } = await db.query(sql, [
+    userId,
+    name,
+    latitude,
+    longitude,
+    address,
+    notes,
+    rating,
+    locationType,
+    visitedDate,
+  ]);
+  return pin;
+}
+
+export async function getMapPinsByUserId(userId) {
+  const sql = `
+    SELECT * 
+    FROM map 
+    WHERE user_id = $1 
+    ORDER BY created_at DESC
+    `;
   const { rows } = await db.query(sql, [userId]);
   return rows;
 }
 
-/**
- * Retrieves a single map location by its ID.
- * @param {number} locationId - The ID of the location to fetch.
- * @returns {Promise<Object|null>} A promise that resolves to the location object, or null if not found.
- */
-export async function getLocationById(locationId) {
-    const sql = `
-    SELECT *
-    FROM map
-    WHERE id = $1
-    `;
-    const {
-        rows: [location],
-    } = await db.query(sql, [locationId]);
-    return location;
-}
-
-
-/**
- * Adds a new location to the map table for a specific user.
- * @param {Object} locationData - An object containing the location details.
- * @param {string} locationData.name - The name of the location.
- * @param {string} locationData.address - The address of the location.
- * @param {number} locationData.latitude - The latitude coordinate.
- * @param {number} locationData.longitude - The longitude coordinate.
- * @param {string} [locationData.location_type] - The type of location (e.g., 'been_there', 'want_to_go').
- * @param {string} [locationData.notes] - User's notes about the location.
- * @param {number} [locationData.rating] - User's rating of the location.
- * @param {Date} [locationData.visited_date] - The date the location was visited.
- * @param {number} locationData.userId - The ID of the user adding the location.
- * @returns {Promise<Object>} A promise that resolves to the newly created location object.
- */
-export async function addLocation({
-  name,
-  address,
-  latitude,
-  longitude,
-  location_type,
-  notes,
-  rating,
-  visited_date,
-  userId,
-}) {
-  const sql = `
-    INSERT INTO map
-      (name, address, latitude, longitude, location_type, notes, rating, visited_date, user_id)
-    VALUES
-      ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-    RETURNING *
-  `;
+export async function updateMapPin(id, userId, updateData) {
   const {
-    rows: [location],
-  } = await db.query(sql, [
     name,
     address,
-    latitude,
-    longitude,
-    location_type,
     notes,
     rating,
-    visited_date,
-    userId,
-  ]);
-  return location;
-}
+    locationType,
+    visitedDate,
+    latitude,
+    longitude,
+  } = updateData;
 
-/**
- * Updates an existing location in the map table.
- * @param {number} locationId - The ID of the location to update.
- * @param {Object} updates - An object containing the fields to update.
- * @returns {Promise<Object>} A promise that resolves to the updated location object.
- */
-export async function updateLocation(locationId, updates) {
-    // Dynamically build the SET part of the query to only update provided fields
-    const { rows: [existingLocation] } = await db.query('SELECT * FROM map WHERE id = $1', [locationId]);
-    if (!existingLocation) return null;
-
-    const newValues = { ...existingLocation, ...updates };
-
-    const sql = `
-        UPDATE map
-        SET name = $2, address = $3, latitude = $4, longitude = $5, location_type = $6, notes = $7, rating = $8, visited_date = $9
-        WHERE id = $1
-        RETURNING *
-    `;
-    const { rows: [updatedLocation] } = await db.query(sql, [
-        locationId,
-        newValues.name,
-        newValues.address,
-        newValues.latitude,
-        newValues.longitude,
-        newValues.location_type,
-        newValues.notes,
-        newValues.rating,
-        newValues.visited_date
-    ]);
-    return updatedLocation;
-}
-
-
-/**
- * Deletes a location from the map table.
- * @param {number} locationId - The ID of the location to delete.
- * @returns {Promise<Object>} A promise that resolves to the deleted location object.
- */
-export async function deleteLocation(locationId) {
   const sql = `
-    DELETE FROM map
-    WHERE id = $1
+    UPDATE map 
+    SET 
+      name = COALESCE($3, name),
+      address = COALESCE($4, address),
+      notes = COALESCE($5, notes),
+      rating = COALESCE($6, rating),
+      location_type = COALESCE($7, location_type),
+      visited_date = COALESCE($8, visited_date),
+      latitude = COALESCE($9, latitude),
+      longitude = COALESCE($10, longitude)
+    WHERE id = $1 AND user_id = $2 
     RETURNING *
-  `;
+    `;
   const {
-    rows: [location],
-  } = await db.query(sql, [locationId]);
-  return location;
+    rows: [pin],
+  } = await db.query(sql, [
+    id,
+    userId,
+    name,
+    address,
+    notes,
+    rating,
+    locationType,
+    visitedDate,
+    latitude,
+    longitude,
+  ]);
+  return pin;
+}
+
+export async function deleteMapPin(pinId, userId) {
+  const sql = `
+    DELETE FROM map 
+    WHERE id = $1 AND user_id = $2 
+    RETURNING *
+    `;
+  const {
+    rows: [pin],
+  } = await db.query(sql, [pinId, userId]);
+  return pin;
 }
