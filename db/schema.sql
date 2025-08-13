@@ -1,7 +1,8 @@
-DROP TABLE IF EXISTS daily_items;
+
 DROP TABLE IF EXISTS journal_entries;
 DROP TABLE IF EXISTS map;
 DROP TABLE IF EXISTS news;
+DROP TABLE IF EXISTS daily_items;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
 
@@ -71,5 +72,5 @@ CREATE TABLE news (
   urlToImage TEXT,
   published_at TIMESTAMP,
   fetched_at TIMESTAMP DEFAULT NOW(),
-  daily_id INT REFERENCES daily_items(id) ON DELETE CASCADE,
+  daily_id INT REFERENCES daily_items(id) ON DELETE CASCADE
 );

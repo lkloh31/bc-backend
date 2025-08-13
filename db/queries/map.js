@@ -37,9 +37,47 @@ export async function getMapPinsByUserId(userId) {
     SELECT * 
     FROM map 
     WHERE user_id = $1 
+    ORDER BY created_at DESC
     `;
   const { rows } = await db.query(sql, [userId]);
   return rows;
+}
+
+export async function updateMapPin({
+  id,
+  userId,
+  name,
+  address,
+  notes,
+  rating,
+  locationType,
+  visitedDate,
+}) {
+  const sql = `
+    UPDATE map 
+    SET 
+      name = $3,
+      address = $4,
+      notes = $5,
+      rating = $6,
+      location_type = $7,
+      visited_date = $8
+    WHERE id = $1 AND user_id = $2 
+    RETURNING *
+    `;
+  const {
+    rows: [pin],
+  } = await db.query(sql, [
+    id,
+    userId,
+    name,
+    address,
+    notes,
+    rating,
+    locationType,
+    visitedDate,
+  ]);
+  return pin;
 }
 
 export async function deleteMapPin(pinId, userId) {
