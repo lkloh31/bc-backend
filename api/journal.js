@@ -22,7 +22,8 @@ journalRouter.get("/", requireUser, async (req, res, next) => {
 // POST /api/journal - Create a new journal entry
 journalRouter.post("/", requireUser, async (req, res, next) => {
   try {
-    const { title, content, tags } = req.body;
+    // Grab the timestamp from the request body
+    const { title, content, tags, entry_timestamp } = req.body;
 
     if (!title || !content) {
       return res.status(400).json({ error: "Title and content are required" });
@@ -33,6 +34,7 @@ journalRouter.post("/", requireUser, async (req, res, next) => {
       title,
       content,
       tags,
+      entry_timestamp, // Pass it to the query function
     });
 
     res.status(201).json(newEntry);
@@ -40,6 +42,8 @@ journalRouter.post("/", requireUser, async (req, res, next) => {
     next(error);
   }
 });
+
+// --- NO CHANGES NEEDED FOR PUT AND DELETE ROUTES ---
 
 // PUT /api/journal/:id - Update a journal entry
 journalRouter.put("/:id", requireUser, async (req, res, next) => {

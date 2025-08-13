@@ -2,20 +2,22 @@ import db from "../client.js";
 
 /**
  * Creates a new journal entry for a specific user.
- * @param {{userId: number, title: string, content: string, tags: string}} entryData - The data for the new entry.
+ * @param {{userId: number, title: string, content: string, tags: string, entry_timestamp: Date}} entryData - The data for the new entry.
  * @returns {Promise<object>} The newly created journal entry.
  */
-export async function createJournalEntry({ userId, title, content, tags }) {
+export async function createJournalEntry({ userId, title, content, tags, entry_timestamp }) {
   const sql = `
-    INSERT INTO journal_entries (user_id, title, content, tags)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO journal_entries (user_id, title, content, tags, entry_timestamp)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
   `;
   const {
     rows: [entry],
-  } = await db.query(sql, [userId, title, content, tags]);
+  } = await db.query(sql, [userId, title, content, tags, entry_timestamp]);
   return entry;
 }
+
+// --- NO CHANGES NEEDED FOR THE FUNCTIONS BELOW ---
 
 /**
  * Retrieves all journal entries for a specific user.
