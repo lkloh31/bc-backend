@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS game_scores;
 DROP TABLE IF EXISTS daily_items;
 DROP TABLE IF EXISTS journal_entries;
 DROP TABLE IF EXISTS map;
@@ -57,4 +58,14 @@ CREATE TABLE map (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   category_id INT REFERENCES categories(id) ON DELETE CASCADE,
   user_id INT REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS game_scores (
+  id           SERIAL PRIMARY KEY,
+  user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  game_key     TEXT    NOT NULL CHECK (game_key IN ('reaction','memory')),
+  best_time_ms INTEGER NOT NULL,
+  attempts     INTEGER NOT NULL DEFAULT 1,
+  updated_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (user_id, game_key)
 );

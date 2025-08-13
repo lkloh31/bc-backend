@@ -10,10 +10,11 @@ import newsRouter from "#api/news";
 import weatherRouter from "./api/weather.js";
 import exchangeRouter from "#api/exchange";
 import mapRouter from "#api/map";
+import gamesRouter from "#api/games";
 
 app.use(
   cors({
-    origin: "http://localhost:5174",
+    origin: "http://localhost:5173",
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -30,6 +31,8 @@ app.use("/daily/news", newsRouter);
 app.use("/daily/weather", weatherRouter);
 app.use("/daily/exchange", exchangeRouter);
 app.use("/map", mapRouter);
+app.use("/games", gamesRouter);
+
 
 app.use((err, req, res, next) => {
   // A switch statement can be used instead of if statements
