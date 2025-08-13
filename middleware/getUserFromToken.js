@@ -10,8 +10,12 @@ export default async function getUserFromToken(req, res, next) {
     const { id } = verifyToken(token);
     const user = await getUserById(id);
     req.user = user;
+
+    return next();
   } catch (error) {
-    console.error("Token verification failed:", error);
+    // If token is invalid, continue without setting req.user
+    console.error("Invalid token:", error.message);
+    return next(); // Use return to prevent further execution
   }
   next();
 }

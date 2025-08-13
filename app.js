@@ -12,6 +12,7 @@ import exchangeRouter from "#api/exchange";
 import mapRouter from "#api/map";
 import journalRouter from "#api/journal";
 
+
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -32,6 +33,7 @@ app.use("/daily/weather", weatherRouter);
 app.use("/daily/exchange", exchangeRouter);
 app.use("/map", mapRouter);
 app.use("/journal", journalRouter);
+
 
 app.use((err, req, res, next) => {
   // A switch statement can be used instead of if statements
