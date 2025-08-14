@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS game_scores;
-DROP TABLE IF EXISTS daily_items;
 DROP TABLE IF EXISTS journal_entries;
 DROP TABLE IF EXISTS map;
+DROP TABLE IF EXISTS daily_items;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS users;
 
@@ -60,7 +60,7 @@ CREATE TABLE map (
   user_id INT REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS game_scores (
+CREATE TABLE game_scores (
   id           SERIAL PRIMARY KEY,
   user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   game_key     TEXT    NOT NULL CHECK (game_key IN ('reaction','memory')),
